@@ -1,0 +1,80 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="style/static.css">
+        <link rel="stylesheet" href="style/desk.css">
+        <link rel="stylesheet" href="style/game.css">
+        <link rel="stylesheet" href="style/card.css">
+    </head>
+    <body>
+
+        <!-- dektop of game --->
+        <div class="desktop-start-game" id="desktopcontrollGame">
+            <div id="showNameOnScreen" style="display: none;z-index: 99999999999;"></div>
+            <div id="storageElementMakeAnimationInBackground"></div>
+            <div class="center-options-menu-game center">
+                <div class="option-menu cursor-pointer" id="buttonStartGame">
+                    <div class="p-effact-light-on-button"></div>
+                    <div class="center"><h2 class="style-font-main-buttons">Start</h2></div>
+                </div>
+                <div class="option-menu cursor-pointer" id="buttonStartGameAsMultiplayer">
+                    <div class="p-effact-light-on-button"></div>
+                    <div class="center"><h2 class="style-font-main-buttons">Multiplayer</h2></div>
+                </div>
+                <div class="option-menu cursor-pointer" id="buttonOpenOptionsGamePlay">
+                    <div class="p-effact-light-on-button"></div>
+                    <div class="center"><h2 class="style-font-main-buttons">Options</h2></div>
+                </div>
+                <div class="option-menu cursor-pointer" id="buttonExitGame">
+                    <div class="p-effact-light-on-button"></div>
+                    <div class="center"><h2 class="style-font-main-buttons">PayPay</h2></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- opitons controlll settings game --->
+        <div class="options-settings-game" id="toolsForEditingGame" style="display: none;">
+            <div class="tools-for-editing-game center">
+                <div class="option-item">
+                    <span>NAME</span>
+                    <input type="text" id="fieldChangeYourNameAsPlayer" maxlength="20" draggable="false" placeholder="Change your name...">
+                </div>
+                <div class="option-item">
+                    <span>VOLUME</span>
+                    <input type="range" min="0" max="10" step="1" id="volumeGame">
+                </div>
+                <div class="option-item buttons">
+                    <input type="button" class="cursor-pointer" value="apply" id="buttonApplyChangeSettings">
+                    <input type="button" class="cursor-pointer" value="cancel" id="buttonCancelChangeSettings">
+                </div>
+            </div>
+        </div>
+
+        <div id="windowLoadStartNewGame" style="display: none;">
+            <div class="c_in_center___ center"></div>
+            <div class="button_back___inLoadWindow cursor-pointer" id="button_back_windowLoading" style="color: rgb(149, 10, 61);">
+                <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="arrow-left" class="svg-inline--fa fa-arrow-left fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path></svg>
+            </div>
+        </div>
+
+
+        <!-- table to player here -->
+        <!-- <div class="table-game" style="display: none;" id="tableGame"> -->
+        <div class="table-game" style="display: none;" id="tableGame">
+
+                <!-- timer of game -->
+            <div class="timer" id="_timer"></div>
+            <div class="elements_animation_new_role" style="display: none;" id="parentShowNamePlayer">
+                <div id="___parentElementsColors"></div>
+                <div class="center" style="z-index: 999999999999999999;"><div class="c_name_in_center__screen" id="centerNamePlayer"></div></div>
+            </div>
+            <div class=""></div>
+
+            <div class="table-players"></div>
+            <div class="table-put-cards center" style="z-index:999999999;top:30%;" id="tablePutCards"></div>
+            <div id="myPrivateCards"></div>
+            <div class="my-private-table" id="myPrivateTable"></div>
+        </div>
+        <script>require("../desk");</script>
+    </body>
+</html>
