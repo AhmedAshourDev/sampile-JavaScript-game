@@ -1,0 +1,130 @@
+.timer {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: rgb(49, 11, 11);
+    font-size: 40px;
+    font-weight: bold;
+    font-family: monospace;
+    z-index: 9999999999999999;
+}
+
+.table-game {
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    position: absolute;
+    background-color: blue;
+}
+
+.table-other-people-play-vs-me {
+    background-color: red;
+    height: 60px;
+    top: 0px;
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    justify-content: stretch;
+    align-content: stretch;
+}
+
+#myPrivateCards {
+    width: 100%;
+    height: 200px;
+    bottom: 0px;
+    position: absolute;
+    background-image: linear-gradient(to top,
+    rgb(235, 191, 47),
+    rgb(243, 167, 53),
+    rgb(238, 108, 32)
+    ,rgb(223, 80, 36));
+    box-shadow: 0px 2px 2px #cccccc;
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 10px 20px;
+    box-shadow: inset 0px 3px 2px red;
+}
+
+.table-put-cards {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.card-on-table-players {
+    width: 70px;
+    height: 100px;
+    background-color: red;
+}
+
+.assert-card-on-table-players {
+    background-color: white;
+    box-shadow: inset 7px 8px 6px #c2bdbd;
+    border-radius: 7px;
+}
+
+.animation-light-card {
+    animation: animationLightCardWasSelected 1s linear infinite;
+}
+
+@keyframes animationLightCardWasSelected {
+    0% { background-color: rgb(235, 30, 30); }
+    10% { background-color: rgb(221, 117, 20); }
+    50% { background-color: rgb(194, 248, 0); }
+    70% { background-color: rgb(13, 162, 122); }
+    100% { background-color: rgb(255, 0, 128); }
+}
+
+.c_name_in_center__screen {
+    background-color: white;
+    width: auto;
+    height: auto;
+    padding: 50px;
+    border-radius: 50%;
+    text-shadow: 4px 4px 1px #cccccc;
+    font-size: 24px;
+    letter-spacing: 1px;
+    font-family: fantasy;
+    animation: __anim____c_name_in_center__screen 1s ease-out 0s infinite;
+}
+
+.come_from_right,
+.come_from_left {
+    position: absolute;
+    height: 50px;
+    width: 100%;
+    z-index: 999999999999999999;
+}
+
+.come_from_right {
+    right: -100%;
+    background-color: rgb(255, 0, 85);
+    animation: __anim____come_from_right 1s ease-out 0s 1;
+}
+
+.come_from_left {
+    left: -100%;
+    background-color: rgb(255, 153, 0);
+    animation: __anim____come_from_left 1s ease-out 0s 1;
+}
+
+@keyframes __anim____come_from_left {
+    from { left: -100%; }
+    to { left: 100%; }
+}
+
+@keyframes __anim____come_from_right {
+    from { right: -100%; }
+    to { right: 100%; }
+}
+
+@keyframes __anim____c_name_in_center__screen {
+    0% { transform: scale(1); letter-spacing: 1px; }
+    50% { transform: scale(1.5); letter-spacing: 6px; }
+    100% { transform: scale(1); letter-spacing: 1px; }
+}

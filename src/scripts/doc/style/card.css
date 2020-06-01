@@ -1,0 +1,80 @@
+.card-play {
+    border-radius: 10px;
+    background-color: rgb(241, 241, 245);
+    position: relative;
+    width: 80px;
+    height: 150px;
+    overflow: hidden;
+    margin-right: 20px;
+    box-shadow:
+    1px 1px 0px white,
+    2px 2px 0px rgb(247, 246, 246),
+    3px 3px 0px rgb(235, 234, 234),
+    4px 4px 0px rgb(228, 228, 228),
+    5px 5px 0px rgb(225, 223, 223),
+    6px 6px 0px rgb(214, 213, 213),
+    7px 7px 0px white,
+    11px 11px 3px 0px rgb(187, 96, 10);
+    transition: all 0.3s linear;
+    z-index: 99999999;
+}
+
+.mouse_hover_private_card:hover {
+    background-color: #f7efef;
+    animation: jumpCard 0.5s linear 0s infinite;
+}
+
+@keyframes jumpCard {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-40px); }
+    100% { transform: translateY(0); }
+}
+
+.t-card-play,
+.b-card-play {
+    left: 0px;
+    padding: 7px;
+    position: absolute;
+    width: 100%;
+    height: 50%;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-content: stretch;
+}
+
+.t-card-play { top: 0px; }
+.b-card-play { bottom: 0px; }
+
+.column-card-start,
+.column-card-center,
+.column-card-last {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.column-card-center { justify-content: center; }
+.column-card-last { justify-content: flex-end; }
+
+.point-at-card {
+    width: 20px;
+    height: 20px;
+    background-color: black;
+    border-radius: 50%;
+    border: 2px solid rgb(203, 181, 181);
+}
+
+.center-line-of-card {
+    background-color: #d7c1c1;
+    height: 0.5px;
+    width: 90%;
+}
+
+.element_between____two_cards {
+    width: 50px;
+    height: 50px;
+    background-color: yellow;
+}
