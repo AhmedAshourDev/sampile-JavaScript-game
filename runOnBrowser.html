@@ -2,7 +2,7 @@
     <head>
         <meta charset="utf-8">
         <style>
-            .card-play {
+.card-play {
     border-radius: 10px;
     background-color: rgb(241, 241, 245);
     position: relative;
@@ -82,6 +82,292 @@
     height: 50px;
     background-color: yellow;
 }
+
+body {
+    background-image: repeating-radial-gradient(orange, red, black 100%);
+    transition: all 1s linear;
+}
+
+body:hover {
+    background-image: repeating-radial-gradient(yellow, orange, red, black 120%);
+}
+
+h2.style-font-main-buttons {
+    font-family: fantasy;
+}
+
+#showNameOnScreen {
+    font-size: 20px;
+    font-family: fantasy;
+    top: 20px;
+    left: 20px;
+    position: fixed;
+    background-color: white;
+    padding: 5px;
+}
+
+#showNameOnScreen > span {
+    color: rgb(52, 18, 18);
+}
+
+.center-options-menu-game {
+    width: 300px;
+    height: 300px;
+}
+
+.option-menu {
+    width: 100%;
+    height: 60px;
+    text-align: center;
+    color: #c57676;
+    background-color: #ffffff;
+    border: 10px solid #791758;
+    border-radius: 0px;
+    margin-bottom: 30px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 7px 6px 0px #3b1a1a;
+}
+
+.____a-1,
+.____a-2,
+.____a-3,
+.____a-4,
+.____a-5 {
+    background-color: red;
+    filter: blur(2px);
+}
+
+
+.____a-1 {
+    width: 100px;
+    height: 100px;
+}
+
+.____a-2 {
+    width: 60px;
+    height: 100px;
+}
+
+.____a-3 {
+    width: 100px;
+    height: 60px;
+    border: 1px solid black;
+    border-left-width: 2px;
+}
+
+.____a-4 {
+    width: 100px;
+    height: 60px;
+    border: 2px solid black;
+}
+
+.____a-5 {
+    width: 100px;
+    height: 100px;
+    border: 2px solid black;
+    border-radius: 50%;
+}
+
+.option-menu:hover {
+    color: #421111;
+    font-size: 25px;
+}
+
+.hard-popup-menu-settings-game {
+    animation: hardPopup 0.5s ease-out 0s infinite;
+}
+
+.animation-scale-button-loop_1 {
+    animation-name: hardPopup;
+    animation-duration: 0.4s;
+    animation-timing-function: linear;
+    animation-iteration-count: 1;
+    animation-delay: 0s;
+}
+
+.animation-scale-button-infinite {
+    animation-name: hardPopup;
+    animation-duration: 0.4s;
+    animation-timing-function: infinite;
+    animation-iteration-count: 1;
+    animation-delay: 0s;
+}
+
+.options-settings-game {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(118, 12, 12, 0.98);
+    top: 0px;
+    left: 0px;
+    position: fixed;
+}
+
+.tools-for-editing-game {
+    width: 400px;
+    height: 150px;
+    background-color: white;
+    border-radius: 5px;
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: column;
+    justify-content: stretch;
+    align-content: stretch;
+    overflow: hidden;
+}
+
+.tools-for-editing-game span {
+    margin-right: 20px;
+    font-family: fantasy;
+    text-shadow: 2px 2px 2px rgb(201, 196, 196);
+}
+
+.tools-for-editing-game .option-item {
+    flex-grow: 1;
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: center;
+    padding: 5px;
+}
+
+.tools-for-editing-game .buttons {
+    background-color: #ffffb6;
+    flex-grow: 0;
+    height: auto;
+    direction: rtl;
+    padding: 15px;
+}
+
+#fieldChangeYourNameAsPlayer {
+    background-color: #ebeeec;
+    font-size: 20px;
+    font-family: fantasy;
+    border-radius: 2px;
+    padding: 10px 5px;
+    flex-grow: 1;
+}
+
+#fieldChangeYourNameAsPlayer::selection {
+    background-color: rgb(211, 40, 40);
+}
+
+#fieldChangeYourNameAsPlayer:focus {
+    background-color: rgb(197, 185, 185);
+}
+
+#volumeGame {
+    flex-grow: 1;
+    -webkit-appearance: none;
+    background-color: #33c6dd;
+    border-radius: 29px;
+    height: 20px;
+}
+
+#volumeGame:hover {
+    background-color: #2da1b3;
+}
+
+#volumeGame::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: rgb(225, 13, 77);
+    cursor: pointer;
+    transform: scale(1.6);
+}
+
+#buttonApplyChangeSettings,
+#buttonCancelChangeSettings {
+    border: 2px solid rgb(54, 98, 231);
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-size: 15px;
+    font-weight: 500;
+    box-shadow: 3px 3px 2px #9fee9b;
+    transition: box-shadow 0.3s linear;
+}
+
+#buttonApplyChangeSettings:hover,
+#buttonCancelChangeSettings:hover {
+    box-shadow: 1px 1px 3px #9fee9b;
+}
+
+#buttonApplyChangeSettings {
+    background-color: #0b45a9;
+    color: white;
+}
+
+#buttonCancelChangeSettings {
+    background-color: #e0e0e0;
+    color: #0b45a9;
+}
+
+#buttonApplyChangeSettings:hover {
+    background-color: #0d3375;
+}
+
+#buttonCancelChangeSettings:hover {
+    background-color: #c2bdbd;
+}
+
+@keyframes hardPopup {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+.effact-light-on-button {
+    position: absolute;
+    top: -50px;
+    left: 0;
+    background-image: linear-gradient(to right,
+        #a646f2,
+        rgb(186, 42, 178),
+        rgb(179, 90, 152),
+        #a646f2);
+    width: 60px;
+    height: 200px;
+    transform: rotate(45deg);
+    animation: animationLight 1s linear 0s 1;
+}
+
+
+@keyframes animationLight {
+    0% { left: -100px; }
+    50% { left: 100px; }
+    100% { left: 120%; }
+}
+
+#windowLoadStartNewGame {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(#700606, red 17%, orange);
+    z-index: 99999999999;
+}
+
+.button_back___inLoadWindow {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: 20px;
+    left: 20px;
+}
+
+.c_in_center___ {
+    background-color: white;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 25px solid rgba(224, 212, 212, 0.768);
+    border-bottom: 10px solid #b05d5d;
+}
+
 .timer {
     position: absolute;
     top: 20px;
@@ -263,7 +549,6 @@ input {
 .cursor-pointer {
     cursor:  url("./img/icons8-cursor-64.png"), pointer;
 }
-
         </style>
     </head>
     <body>
