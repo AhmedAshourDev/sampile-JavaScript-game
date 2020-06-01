@@ -1,0 +1,1015 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="style/static.css">
+        <link rel="stylesheet" href="style/desk.css">
+        <link rel="stylesheet" href="style/game.css">
+        <link rel="stylesheet" href="style/card.css">
+    </head>
+    <body>
+
+        <!-- dektop of game --->
+        <div class="desktop-start-game" id="desktopcontrollGame">
+            <div id="showNameOnScreen" style="display: none;z-index: 99999999999;"></div>
+            <div id="storageElementMakeAnimationInBackground"></div>
+            <div class="center-options-menu-game center">
+                <div class="option-menu cursor-pointer" id="buttonStartGame">
+                    <div class="p-effact-light-on-button"></div>
+                    <div class="center"><h2 class="style-font-main-buttons">Start</h2></div>
+                </div>
+                <div class="option-menu cursor-pointer" id="buttonStartGameAsMultiplayer">
+                    <div class="p-effact-light-on-button"></div>
+                    <div class="center"><h2 class="style-font-main-buttons">Multiplayer</h2></div>
+                </div>
+                <div class="option-menu cursor-pointer" id="buttonOpenOptionsGamePlay">
+                    <div class="p-effact-light-on-button"></div>
+                    <div class="center"><h2 class="style-font-main-buttons">Options</h2></div>
+                </div>
+                <div class="option-menu cursor-pointer" id="buttonExitGame">
+                    <div class="p-effact-light-on-button"></div>
+                    <div class="center"><h2 class="style-font-main-buttons">PayPay</h2></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- opitons controlll settings game --->
+        <div class="options-settings-game" id="toolsForEditingGame" style="display: none;">
+            <div class="tools-for-editing-game center">
+                <div class="option-item">
+                    <span>NAME</span>
+                    <input type="text" id="fieldChangeYourNameAsPlayer" maxlength="20" draggable="false" placeholder="Change your name...">
+                </div>
+                <div class="option-item">
+                    <span>VOLUME</span>
+                    <input type="range" min="0" max="10" step="1" id="volumeGame">
+                </div>
+                <div class="option-item buttons">
+                    <input type="button" class="cursor-pointer" value="apply" id="buttonApplyChangeSettings">
+                    <input type="button" class="cursor-pointer" value="cancel" id="buttonCancelChangeSettings">
+                </div>
+            </div>
+        </div>
+
+        <div id="windowLoadStartNewGame" style="display: none;">
+            <div class="c_in_center___ center"></div>
+            <div class="button_back___inLoadWindow cursor-pointer" id="button_back_windowLoading" style="color: rgb(149, 10, 61);">
+                <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="arrow-left" class="svg-inline--fa fa-arrow-left fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path></svg>
+            </div>
+        </div>
+
+
+        <!-- table to player here -->
+        <!-- <div class="table-game" style="display: none;" id="tableGame"> -->
+        <div class="table-game" style="display: none;" id="tableGame">
+
+                <!-- timer of game -->
+            <div class="timer" id="_timer"></div>
+            <div class="elements_animation_new_role" style="display: none;" id="parentShowNamePlayer">
+                <div id="___parentElementsColors"></div>
+                <div class="center" style="z-index: 999999999999999999;"><div class="c_name_in_center__screen" id="centerNamePlayer"></div></div>
+            </div>
+            <div class=""></div>
+
+            <div class="table-players"></div>
+            <div class="table-put-cards center" style="z-index:999999999;top:30%;" id="tablePutCards"></div>
+            <div id="myPrivateCards"></div>
+            <div class="my-private-table" id="myPrivateTable"></div>
+        </div>
+        <script>/* require("../desk"); */
+        // if API of web work here
+// we will not net to make internal script
+
+// when we change the platform just remove ;;const path = require("path");
+/* const path = require("path"); */
+
+function $(element) { return document.getElementById(element); }
+function on(element, event, func) { element.addEventListener(event, func, true); }
+
+
+
+function MediaPlayer(path_audio_file) {
+    this.__audio = new Audio(path_audio_file/* path.resolve(__dirname, path_audio_file) */);
+}
+
+MediaPlayer.prototype.start = function() {
+    this.__audio.play();
+};
+
+MediaPlayer.prototype.stop = function() {
+    this.__audio.pause();
+    this.__audio.currentTime = 0;
+};
+
+MediaPlayer.prototype.restart = function() {
+    this.stop();
+    this.__audio.load();
+    this.__audio.play();
+};
+
+MediaPlayer.prototype.setVolume = function(value) {
+    this.__audio.volume = value;
+};
+
+
+const ALL_CARD_PLAY = [
+    // 6                      // 5
+    { top: 6, bottom: 6 },    { top: 5, bottom: 5 },
+    { top: 6, bottom: 5 },    { top: 5, bottom: 4 },
+    { top: 6, bottom: 4 },    { top: 5, bottom: 3 },
+    { top: 6, bottom: 3 },    { top: 5, bottom: 2 },
+    { top: 6, bottom: 2 },    { top: 5, bottom: 1 },
+    { top: 6, bottom: 1 },    { top: 5, bottom: 0 },
+    { top: 6, bottom: 0 },
+
+    // 4                      // 3
+    { top: 4, bottom: 4 },    { top: 3, bottom: 3 },
+    { top: 4, bottom: 3 },    { top: 3, bottom: 2 },
+    { top: 4, bottom: 2 },    { top: 3, bottom: 1 },
+    { top: 4, bottom: 1 },    { top: 3, bottom: 0 },
+    { top: 4, bottom: 0 },
+
+    // 2                      // 1
+    { top: 2, bottom: 2 },    { top: 1, bottom: 1 },
+    { top: 2, bottom: 1 },    { top: 1, bottom: 0 },
+    { top: 2, bottom: 0 },
+
+    // 0
+    { top: 0, bottom: 0 },
+];
+
+function createRandomCard() {
+    return ALL_CARD_PLAY[Math.floor(Math.random() * ALL_CARD_PLAY.length)];
+}
+
+function createCardHTML(centerTop, centerBottom, boxShadow=true, onTable=false) {
+    let _card = "";
+    function createCenterOfCard(number) {
+        function createPointsCard(numberPoints) {
+            let points = "";
+            for (var i = 0; i < numberPoints; i++) {
+                points += '<div class="point-at-card"></div>';
+            }
+            return points;
+        }
+
+        function _createCenterOfCard(start, center, last) {
+            let _html = '';
+            let _styleLastColumn = '';
+            if (last > 1) _styleLastColumn = "justify-content: space-between;";
+            _html += '<div class="column-card-start">' + createPointsCard(start) + '</div>';
+            _html += '<div class="column-card-center">' + createPointsCard(center) + '</div>';
+            _html += '<div class="column-card-last" style="' + _styleLastColumn + '">' + createPointsCard(last) + '</div>';
+            return _html;
+        }
+
+        let _html = '';
+        switch (number) {
+            case 1:
+                _html = _createCenterOfCard(0, 1, 0);
+                break;
+            case 2:
+                _html = _createCenterOfCard(1, 0, 1);
+                break;
+            case 3:
+                _html = _createCenterOfCard(1, 1, 1);
+                break;
+            case 4:
+                _html = _createCenterOfCard(2, 0, 2);
+                break;
+            case 5:
+                _html = _createCenterOfCard(2, 1, 2);
+                break;
+            case 6:
+                _html = _createCenterOfCard(3, 0, 3);
+                break;
+            default:
+                _html = _createCenterOfCard(0, 0, 0);
+        }
+        return _html;
+    }
+
+
+    // shadow
+    if (boxShadow === false) boxShadow = "box-shadow:none;"; else boxShadow = "";
+
+    let __style_classes = "card-play mouse_hover_private_card cursor-pointer";
+    let __style_resize = "";
+    if (onTable === true) {
+        __style_classes = "card-play";
+        __style_resize = "width:100%;height:100%;";
+    }
+
+    return '<div class="' + __style_classes + '" style="' + __style_resize + boxShadow + '" data-infocard="'
+            + (centerTop || 0) + ',' + (centerBottom || 0) + '" draggable="false">'
+            + '<div class="t-card-play">' + createCenterOfCard(centerTop) + '</div>'
+            + '<div class="center-line-of-card center"></div>'
+            + '<div class="b-card-play">' + createCenterOfCard(centerBottom) + '</div>'
+        + '</div>';
+}
+
+
+
+"use strict";
+// this lib to make API functions to controll system
+// we can change way to wrok but cannot change name of fucntion
+/* const fs = require("fs");
+const net = require("net");
+const url = require("url");
+const path = require("path");
+const process = require("process");
+const electron = require("electron");
+const http = require("http");
+
+const DIR_STORAGE_DATA_GAME = path.resolve(__dirname, "./storage.json"); */
+
+// export
+// finish of game
+//>>>>>>>>>>>>>>>>>>>>>>>>>> we will change this function to work in the another platforms
+function _exitGame() {
+/*     electron.remote.process.exit(0);
+    process.exit(0); */
+}
+
+// set data storage in for pc or phone device
+//>>>>>>>>>>>>>>>>>>>>>>>>>> we will change this function to work in the another platforms
+let __data = {name: "ahmed", volume:1};
+function setDataStorage(nameDataJson, value) {
+    __data[nameDataJson] = value;
+/*     let dataJson = require("./storage.json");
+    dataJson[ nameDataJson ] = value;
+    let data = JSON.stringify(dataJson, null, 4);
+    fs.writeFileSync(DIR_STORAGE_DATA_GAME, data); */
+}
+
+// get data you was storage it befor
+// storage on => {Database || normale file Like JSON}
+//>>>>>>>>>>>>>>>>>>>>>>>>>> we will change this function to work in the another platforms
+function getDataStorage(nameDataJson) {
+/*     return require(DIR_STORAGE_DATA_GAME)[ nameDataJson ]; */
+    return __data[ nameDataJson ];
+}
+
+// export
+// change volume game
+function _storageVolumeGame(value) { setDataStorage("volume", value); }
+function _getVolumeGame() { return parseInt(getDataStorage("volume")); }
+
+// export
+// change name player in game
+function _storageUserNameAsPlayerInGame(name) { setDataStorage("name", name); }
+function _getUserNameAsPlayerInGame() { return getDataStorage("name"); }
+
+
+const PORT_CONNECTION_BETWEEN_DEVIDES_PLAYERS = 4340;
+
+// what players will change on their devices will storage in this variable
+// and i will change here also
+var __data_from_devices_players = "";
+var __data_sendto_devices_players = "";
+
+
+/*
+// assert your server on desktop with browser like chrome
+_createServerForMultiPlayer();
+setInterval(() => {
+    // get data from another device
+    console.log(_getDataFromClientDevice());
+    // set your data for this another device
+    _sendDataForPlayers("Sdjsjkdlskdlsd 39483h43u");
+}, 1000);
+*/
+
+
+// we will called this function once only and not call it again
+function _createServerForMultiPlayer() {
+/*     let _server = http.createServer(function(request, reponse) {
+        reponse.writeHead(200, { "Content-Type": "text/plain" });
+        let __query_data = (url.parse(request.url).query || "");
+        let __array_quer_data = __query_data.split("&");
+        if (__array_quer_data.length === 1) {
+            console.log(__array_quer_data);
+            __data_from_devices_players = __array_quer_data[ 0 ].split("=")[ 1 ];
+        }
+        reponse.write(__data_sendto_devices_players);
+        reponse.end();
+    });
+    _server.listen(PORT_CONNECTION_BETWEEN_DEVIDES_PLAYERS); */
+}
+
+
+function _createConnectionToServerAnotherPlayer() {
+}
+
+// send data for device players (all players)
+function _sendDataForPlayers(data) {
+    __data_sendto_devices_players = data;
+}
+
+// get data from another device
+function _getDataFromClientDevice() {
+    return __data_from_devices_players;
+}
+/* 
+// exports all functions to work as `Nodejs`
+exports._exitGame = _exitGame;
+exports._storageVolumeGame = _storageVolumeGame;
+exports._getVolumeGame = _getVolumeGame;
+exports._storageUserNameAsPlayerInGame = _storageUserNameAsPlayerInGame;
+exports._getUserNameAsPlayerInGame = _getUserNameAsPlayerInGame;
+exports._createServerForMultiPlayer = _createServerForMultiPlayer;
+exports._createConnectionToServerAnotherPlayer = _createConnectionToServerAnotherPlayer;
+exports._sendDataForPlayers = _sendDataForPlayers;
+exports._getDataFromClientDevice = _getDataFromClientDevice; */
+
+
+
+
+
+
+/* "use strict";
+
+const { $, on } = require("./element");
+const { MediaPlayer } = require("./audio");
+const { startGameTable } = require("./game");
+const {
+    _exitGame,
+    _storageVolumeGame,
+    _getVolumeGame,
+    _storageUserNameAsPlayerInGame,
+    _getUserNameAsPlayerInGame
+} = require("./internal");
+
+ */
+// element show name player in screen
+var showNameOnScreen = $("showNameOnScreen");
+var storageElementMakeAnimationInBackground = $("storageElementMakeAnimationInBackground");
+setNameUserOnScreen(_getUserNameAsPlayerInGame());
+
+
+function getRandomNumberByLength(length) {
+    return Math.floor(Math.random() * length);
+}
+
+
+function getRandomColor____RBG() {
+    let r = getRandomNumberByLength(255),
+        b = getRandomNumberByLength(255),
+        g = getRandomNumberByLength(255);
+    return 'rgb(' + r + ',' + g + ',' + b + ')';
+}
+
+const ALL_CLASSES_STYLE_ELEMENT_____TO_MAKE_ANIMATION_IN_BACKGROUND_OF_USER = [
+    "____a-1", "____a-2", "____a-3", "____a-4", "____a-5"
+];
+
+const SPEED____ANIMATION_BACKGROUND_USER = 50;
+
+var _animtionInBackground = null;
+function startAnimationInMainBackgroundUser() {
+    _animtionInBackground = setInterval(function() {
+        let _random_number_class_element = ALL_CLASSES_STYLE_ELEMENT_____TO_MAKE_ANIMATION_IN_BACKGROUND_OF_USER[
+            getRandomNumberByLength(ALL_CLASSES_STYLE_ELEMENT_____TO_MAKE_ANIMATION_IN_BACKGROUND_OF_USER.length)
+        ];
+
+        // style new color
+        let _random_number_position____left = getRandomNumberByLength(100);
+        let _random_number_position____top = getRandomNumberByLength(100);
+        let _random_number_trasnfrorm_scale = getRandomNumberByLength(4);
+    
+        // add element animation after edit style attribute
+        storageElementMakeAnimationInBackground.innerHTML
+        += '<div style="background-color:' + getRandomColor____RBG() + ';transform:scale(' + _random_number_trasnfrorm_scale
+        + ');position:fixed;top:' + _random_number_position____top + '%;left:' + _random_number_position____left
+        + '%" class="' + _random_number_class_element + '"></div>';
+
+        // start new promise to remove element color
+        setTimeout(function() {
+            let _elements = storageElementMakeAnimationInBackground.getElementsByTagName("*");
+            let __numberOfAnyChildElement = getRandomNumberByLength(_elements.length);
+            let ___element = _elements[ __numberOfAnyChildElement ];
+            storageElementMakeAnimationInBackground.removeChild(___element);
+
+            // print count of color on screen
+            //console.log(_elements.length);
+        }, 10000);
+
+    }, SPEED____ANIMATION_BACKGROUND_USER);
+}
+
+function stopStartAnimationInMainBackgroundUser() {
+    if (!!_animtionInBackground) clearInterval(_animtionInBackground);
+}
+
+// start animtion _____________
+startAnimationInMainBackgroundUser();
+
+function setNameUserOnScreen(name) {
+    let __array_name = name.split(" ");
+    let __html_span = "";
+    for (var name of __array_name) __html_span += "<span>" + name + " </span>";
+    showNameOnScreen.innerHTML = __html_span;
+}
+
+function hideNameUserOnScreen() { showNameOnScreen.style.display = "none"; }
+function showNameUserOnScreen() { showNameOnScreen.style.display = "block"; }
+
+
+// menu game options
+var buttonStartGame = $("buttonStartGame");
+var buttonStartGameAsMultiplayer = $("buttonStartGameAsMultiplayer");
+var buttonOpenOptionsGamePlay = $("buttonOpenOptionsGamePlay");
+var buttonExitGame = $("buttonExitGame");
+
+// add event exit game
+on(buttonExitGame, "click",  function() {
+    stopStartAnimationInMainBackgroundUser();
+    _exitGame();
+});
+
+//hard-popup-menu-settings-game
+var toolsForEditingGame = $("toolsForEditingGame");
+var fieldChangeYourNameAsPlayer = $("fieldChangeYourNameAsPlayer");
+var volumeGame = $("volumeGame");
+
+
+// audio to assert voulme of game
+const audioBackgroundForSettingsGame = new MediaPlayer("./doc/audio/background_assert_audio_settings.mp3");
+const audioMouseHoverMainButton = new MediaPlayer("./doc/audio/mouse_hover_main_button.mp3");
+const audioBackgroundForUser = new MediaPlayer("./doc/audio/audio_in_background_for_user.mp3");
+audioMouseHoverMainButton.setVolume(1.0);
+audioBackgroundForUser.setVolume(0.1);
+//audioBackgroundForUser.start();
+
+
+on(buttonOpenOptionsGamePlay, "click", function() {
+    stopStartAnimationInMainBackgroundUser();
+    restartValueOfOptionsToShow();
+    showOptionsToolsForEditGame();
+    setTimeout(function() {
+        toolsForEditingGame.classList.remove("hard-popup-menu-settings-game");
+    }, 500);
+    toolsForEditingGame.classList.add("hard-popup-menu-settings-game");
+    audioBackgroundForSettingsGame.setVolume(_getVolumeGame() / 10);
+    audioBackgroundForUser.stop();
+    audioBackgroundForSettingsGame.start();
+});
+
+function showOptionsToolsForEditGame() { toolsForEditingGame.style.display = "block"; }
+function hideOptionsToolsForEditGame() { toolsForEditingGame.style.display = "none"; }
+
+function restartValueOfOptionsToShow() {
+    fieldChangeYourNameAsPlayer.value = _getUserNameAsPlayerInGame();
+    volumeGame.value = _getVolumeGame();
+}
+
+// change volume of game from slider game
+on(volumeGame, "input", function() {
+    let volume = parseInt(volumeGame.value);
+    volumeGame.style.backgroundColor = "rgb(255,55," + (volume * 20) + ")";
+    audioBackgroundForSettingsGame.setVolume(volume / 10);
+});
+
+
+var buttonApplyChangeSettings = $("buttonApplyChangeSettings");
+var buttonCancelChangeSettings = $("buttonCancelChangeSettings");
+
+// apply changing
+on(buttonApplyChangeSettings, "click", function() {
+    startAnimationInMainBackgroundUser();
+    hideOptionsToolsForEditGame();
+    _storageVolumeGame(volumeGame.value);
+    let name = fieldChangeYourNameAsPlayer.value;
+    if (!!name && name != "\t") {
+        setNameUserOnScreen(name);
+        _storageUserNameAsPlayerInGame(name);
+    }
+    audioBackgroundForSettingsGame.stop();
+    audioBackgroundForUser.start();
+});
+
+// cancel changing
+on(buttonCancelChangeSettings, "click", function() {
+    startAnimationInMainBackgroundUser();
+    hideOptionsToolsForEditGame();
+    restartValueOfOptionsToShow();
+    audioBackgroundForSettingsGame.stop();
+    audioBackgroundForUser.start();
+});
+
+// start animation buttons
+startAnimationMainGameButtons();
+setInterval(function() {
+    startAnimationMainGameButtons();
+}, 6000);
+
+
+
+function startAudioAnimationWhenMouseHoverMainButton() { audioMouseHoverMainButton.start(); }
+function stopAudioAnimationWhenMouseHoverMainButton() { audioMouseHoverMainButton.stop(); }
+
+
+// start music effect when mouse enter button
+on(buttonApplyChangeSettings, "mouseenter", startAudioAnimationWhenMouseHoverMainButton);
+on(buttonCancelChangeSettings, "mouseenter", startAudioAnimationWhenMouseHoverMainButton);
+on(buttonStartGame, "mouseenter", startAudioAnimationWhenMouseHoverMainButton);
+on(buttonStartGameAsMultiplayer, "mouseenter", startAudioAnimationWhenMouseHoverMainButton);
+on(buttonOpenOptionsGamePlay, "mouseenter", startAudioAnimationWhenMouseHoverMainButton);
+on(buttonExitGame, "mouseenter", startAudioAnimationWhenMouseHoverMainButton);
+
+
+// stop music effect when mouse out button
+on(buttonApplyChangeSettings, "mouseout", stopAudioAnimationWhenMouseHoverMainButton);
+on(buttonCancelChangeSettings, "mouseout", stopAudioAnimationWhenMouseHoverMainButton);
+on(buttonStartGame, "mouseout", stopAudioAnimationWhenMouseHoverMainButton);
+on(buttonStartGameAsMultiplayer, "mouseout", stopAudioAnimationWhenMouseHoverMainButton);
+on(buttonOpenOptionsGamePlay, "mouseout", stopAudioAnimationWhenMouseHoverMainButton);
+on(buttonExitGame, "mouseout", stopAudioAnimationWhenMouseHoverMainButton);
+
+
+//effact-light-on-button
+function setAnimationLighting(element) {
+    let _element_make_animation_light = element.getElementsByClassName("p-effact-light-on-button")[ 0 ];
+    _element_make_animation_light.style.display = "block";
+    _element_make_animation_light.classList.add("effact-light-on-button");
+    setTimeout(() => {
+        _element_make_animation_light.classList.remove("effact-light-on-button");
+    }, 1000);
+}
+
+function startAnimationMainGameButtons() {
+    buttonStartGame.classList.remove("animation-scale-button-loop_1");
+    buttonStartGameAsMultiplayer.classList.remove("animation-scale-button-loop_1");
+    buttonOpenOptionsGamePlay.classList.remove("animation-scale-button-loop_1");
+    buttonExitGame.classList.remove("animation-scale-button-loop_1");
+
+    setTimeout(() => { setAnimationLighting(buttonStartGame); buttonStartGame.classList.add("animation-scale-button-loop_1"); }, 100);
+    setTimeout(() => { setAnimationLighting(buttonStartGameAsMultiplayer); buttonStartGameAsMultiplayer.classList.add("animation-scale-button-loop_1"); }, 200);
+    setTimeout(() => { setAnimationLighting(buttonOpenOptionsGamePlay); buttonOpenOptionsGamePlay.classList.add("animation-scale-button-loop_1"); }, 300);
+    setTimeout(() => { setAnimationLighting(buttonExitGame); buttonExitGame.classList.add("animation-scale-button-loop_1"); }, 400);
+}
+
+function showTableGame() {
+    let _tableGame = $("tableGame");
+    let _desktopcontrollGame = $("desktopcontrollGame");
+    tableGame.style.display = "block";
+    desktopcontrollGame.style.display = "none";
+}
+
+function hideTableGame() {
+    let _tableGame = $("tableGame");
+    let _desktopcontrollGame = $("desktopcontrollGame");
+    tableGame.style.display = "none";
+    desktopcontrollGame.style.display = "block";
+}
+
+var windowLoadStartNewGame = $("windowLoadStartNewGame");
+var button_back_windowLoading = $("button_back_windowLoading");
+var ____Anim = null;
+var ____size_circle_color = 17;
+var ___increase = true;
+
+on(button_back_windowLoading, "click", function() {
+    stopAnimationLoadWindowPlayerToStartGame();
+    hideTableGame();
+});
+
+function startAnimationLoadWindowPlayerToStartGame() {
+    stopStartAnimationInMainBackgroundUser();
+    ____Anim = setInterval(function() {
+        if (____size_circle_color == 100)  ___increase = false; else if (____size_circle_color === 1) ___increase = true;
+        if (___increase === true) ____size_circle_color++; else ____size_circle_color--;
+        windowLoadStartNewGame.style.backgroundImage = 'radial-gradient(#700606, red ' + ____size_circle_color + '%, orange)';
+    });
+    windowLoadStartNewGame.style.display = "block";
+}
+function stopAnimationLoadWindowPlayerToStartGame() {
+    startAnimationInMainBackgroundUser();
+    windowLoadStartNewGame.style.display = "none";
+    if (!!____Anim) clearTimeout(____Anim);
+}
+
+on(buttonStartGame, "click", function() {
+    hideNameUserOnScreen();
+    stopStartAnimationInMainBackgroundUser();
+    startAnimationLoadWindowPlayerToStartGame();
+    setTimeout(() => {
+        stopAnimationLoadWindowPlayerToStartGame();
+    }, 2000);
+    showTableGame();
+    startGameTable();
+});
+
+on(buttonStartGameAsMultiplayer, "click", function() {
+    hideNameUserOnScreen();
+    stopStartAnimationInMainBackgroundUser();
+    startAnimationLoadWindowPlayerToStartGame();
+    showTableGame();
+    startGameTable();
+});
+
+animationUserStillOnButtonPayPay();
+function animationUserStillOnButtonPayPay() {
+    let __doAnimtion = null;
+
+    // bide button after
+    on(buttonExitGame, "mouseenter", () => {
+        __doAnimtion = setTimeout(() => {
+            buttonExitGame.style.display = "none";
+            __doAnimtion = setTimeout(() => {
+                buttonExitGame.style.display = "block";
+            }, 3000);
+        }, 3000);
+    });
+    on(buttonExitGame, "mouseout", () => {
+        if (!!__doAnimtion) {
+            clearTimeout(__doAnimtion);
+            __doAnimtion = null;
+        }
+    });
+}
+
+/* "use strict";
+
+const { $, on } = require("./element");
+//const { hideNameUserOnScreen } = require("./desk");
+const { _getUserNameAsPlayerInGame } = require("./internal");
+const {
+    ALL_CARD_PLAY,
+    createRandomCard,
+    createCardHTML
+} = require("./card");
+ */
+
+// in this array we will but all card which was played
+// and cannot play it again
+const ALL_CARD_ON_TABLE = [];
+
+///// to restart data in software of game
+function ___restartGame() {
+    ALL_CARD_ON_TABLE = [];
+}
+
+// check if card was played
+function isCardOnTable(top, bottom) {
+    for (let _card of ALL_CARD_ON_TABLE) {
+        if (_card.top === top && _card.bottom === bottom) return true;
+    }
+    return false;
+}
+
+function getDataInfoCard(element) {
+    let data = element.getAttribute("data-infocard").split(",");
+    return {
+        ___centerTop: parseInt(data[0]),
+        ___centerBottom: parseInt(data[1])
+    };
+}
+
+var myPrivateCards = $("myPrivateCards");
+
+// add private card
+function addElementPrivateCard(stringElement) {
+    myPrivateCards.innerHTML += stringElement;
+}
+// remove private card
+function removeElementPrivateCard(centerTop = 0, centerBottom = 0) {
+    var elements = myPrivateCards.getElementsByClassName("card-play");
+    for (var i = 0; i < elements.length; i++) {
+        let element = elements[i];
+        let dataCard = getDataInfoCard(element);
+        if (dataCard.___centerTop === centerTop && dataCard.___centerBottom === centerBottom) {
+            element.parentNode.removeChild(element);
+        }
+    }
+}
+function loopOnPrivateCards(callbackFunc) {
+    let elements = myPrivateCards.getElementsByClassName("card-play");
+    for (var i = 0; i < elements.length; i++) {
+        if (callbackFunc(elements[ i ]) === true) break;
+    }
+}
+
+var elementTimer = $("_timer");
+function startNewTimerOnScreen(callbackFuncOnEndTimer) {
+    let time = 30;
+    let __timerFunc = setInterval(function() {
+        // change color for dang number
+        if (time === 3 || time === 2 || time === 1) elementTimer.style.color = "red";
+        else elementTimer.style.color = "black";
+        
+        if (time === 0) {
+            if (typeof callbackFuncOnEndTimer === "function") callbackFuncOnEndTimer();
+            clearInterval(__timerFunc);
+        } else {
+            time -= 1;
+            elementTimer.innerHTML = time;
+        }
+    }, 1000);
+}
+
+
+// function stopNewTimerOnScreen() {
+//     if (!!__timerFunc) clearTimeout(__timerFunc);
+// }
+
+function __getRandomNumberByLength(length) {
+    if (typeof length !== "number") length = length.length;
+    return Math.floor(Math.random() * length);
+}
+
+
+function __getRandomColor____RBG() {
+    let r = __getRandomNumberByLength(255),
+        b = __getRandomNumberByLength(255),
+        g = __getRandomNumberByLength(255);
+    return 'rgb(' + r + ',' + g + ',' + b + ')';
+}
+
+const CONST_NAME_IN_CENTER_TABLE = "Oooh";
+const TIME_HIDE_NAME_PLAYER_AFTER_SHOW_ON_SCREEN = 4 * 1000;
+function doAnimationStartRoleAnotherPlayer(namePlayer) {
+    let centerNamePlayer = $("centerNamePlayer");
+    let parentShowNamePlayer = $("parentShowNamePlayer");
+    let ___parentElementsColors = $("___parentElementsColors");
+
+    // show animation
+    parentShowNamePlayer.style.display = "block";
+    centerNamePlayer.innerHTML = namePlayer || CONST_NAME_IN_CENTER_TABLE;
+    
+    let __left = true;
+    for (let i = 0; i < 20; i++) {
+        __left = !__left;
+        if (__left) ___parentElementsColors.innerHTML += '<div style="background-color:' + __getRandomColor____RBG() + ';top:' + (i * 5) + '%;" class="come_from_left">';
+        else ___parentElementsColors.innerHTML += '<div style="background-color:' + __getRandomColor____RBG() + ';top:' + (i * 5) + '%;" class="come_from_right">';
+    }
+    // hide element show name player
+    setTimeout(() => {
+        parentShowNamePlayer.style.display = "none";
+        centerNamePlayer.innerHTML = "";
+        while (___parentElementsColors.firstChild)
+            ___parentElementsColors.removeChild(___parentElementsColors.firstChild);
+    }, TIME_HIDE_NAME_PLAYER_AFTER_SHOW_ON_SCREEN);
+}
+
+
+function getRandomCardNotPlayed() {
+    var card = createRandomCard();
+    while (isCardOnTable(card)) {
+        card = createRandomCard();
+    }
+    return card;
+}
+
+let _____func = null;
+function onAddCardFromMe(callbackFunc) {
+    if (typeof callbackFunc === "function") _____func = callbackFunc;
+    else if (_____func != null) _____func();
+}
+
+
+////////////////////////////////////////////////////////////////////////// data card to play 
+var dataCardWasSelectedToPlay = {top: null, bottom: null};
+var _______card_left_number = null;
+var _______card_right_number = null;
+function __addCardInLeft(cardNumber) { _______card_left = cardNumber; }
+function __addCardInRight(cardNumber) { _______card_right = cardNumber; }
+
+
+var iCanPlay = true;
+function callIfCanPlay(callbackFunc) {
+    if (iCanPlay === true) {
+        callbackFunc();
+    }
+}
+
+var startGame = true;
+const MESSAGES____ = [
+    "انا احبك", "من انت ايها الحميل",
+    "لماذا انت رائع هكذا", "انا هخلبالى من جهازك", "متقلقش انت بامان", "بص وراك كده", "قلى ما هو سرك انا اراقبك"
+];
+
+
+// add events what happend when the main player select his private card
+function setEventMouseDownForAllPrivateCard() {
+    loopOnPrivateCards(function(elementPrivateCard) {
+        elementPrivateCard.onclick = function() {
+
+            let msg = MESSAGES____[ __getRandomNumberByLength(MESSAGES____) ];
+            console.log(msg);
+            doAnimationStartRoleAnotherPlayer(msg);
+
+            ___removeAllAssertCards();
+
+            // change `backgroundColor` style in private cards
+            loopOnPrivateCards(function(_elementPrivateCard) {
+                if (_elementPrivateCard !== elementPrivateCard) {
+                    _elementPrivateCard.style.backgroundColor = "white";
+                }
+            });
+            elementPrivateCard.style.backgroundColor = "red";
+
+            // animations select private card
+            endAnimationSelectPrivateCard();
+            addAnimationSelectPrivateCard(elementPrivateCard);
+
+            // get data of numbers in the top and bottom in private card
+            let data = getDataInfoCard(elementPrivateCard);
+            dataCardWasSelectedToPlay.top = data.___centerTop;
+            dataCardWasSelectedToPlay.bottom = data.___centerBottom;
+
+            if (dataCardWasSelectedToPlay.top === dataCardWasSelectedToPlay.bottom)
+                addAssertCardOnTablePlayers();
+            else
+                addAssertCardOnTablePlayers(true);
+        };
+    });
+}
+
+
+function ___removeAllAssertCards(nt_check_if_have_element_child=false) {
+    let elements = tablePutCards.getElementsByClassName("assert-card-on-table-players");
+    for (let i = 0; i < elements.length; i++) {
+        let __as = elements[i];
+        if (__as.style.borderRadius !== "50%") {
+            if (nt_check_if_have_element_child === true) return __as.parentNode.removeChild(elements[i]);
+            else if (!__as.firstChild) __as.parentNode.removeChild(elements[i]);
+        }
+    }
+}
+let ____where_add_card_on_table = "START";
+var tablePutCards = $("tablePutCards");
+function setEventsForAssertCardsOnTablePlayers() {
+    let elements = tablePutCards.getElementsByClassName("assert-card-on-table-players");
+    for (var i = 0; i < elements.length; i++) {
+        let element = elements[i];
+        element.onclick = function() {
+            if (startGame === true) startGame = false;
+            if (!element.firstChild) {
+                element.style.backgroundColor = "red";
+                callIfCanPlay(function() {
+                    removeElementPrivateCard(
+                        dataCardWasSelectedToPlay.top, 
+                        dataCardWasSelectedToPlay.bottom
+                    );
+                    element.innerHTML += createCardHTML(
+                        dataCardWasSelectedToPlay.top, 
+                        dataCardWasSelectedToPlay.bottom,
+                        false,
+                        true
+                    );
+                    onAddCardFromMe();
+                    ___removeAllAssertCards();
+                    let _elements = tablePutCards.getElementsByClassName("assert-card-on-table-players");
+                    if (_elements.length === 4) {
+                        let nextElement = tablePutCards.firstChild.nextElementSibling;
+                        nextElement.parentNode.removeChild(nextElement);
+                        tablePutCards.firstChild.nextElementSibling.innerHTML = "";
+                        //tablePutCards.firstChild.nextElementSibling.style.transofrm = "scale(0.5)";
+                        tablePutCards.firstChild.nextElementSibling.style.borderRadius = "50%";
+                        tablePutCards.firstChild.nextElementSibling.style.backgroundColor = "white";
+                        tablePutCards.firstChild.nextElementSibling.onclick = null;
+                    }
+                });
+            }
+        };
+    }
+}
+
+
+function addNewPrivateCard(centerTop, centerBottom) {
+    addElementPrivateCard(createCardHTML(centerTop, centerBottom));
+    setEventMouseDownForAllPrivateCard();
+}
+
+
+function addAssertCardOnTablePlayers(rotate=false) {
+    let _html = '';
+    function add_atStart() {
+        if (rotate === false) tablePutCards.innerHTML
+            = '<div class="card-on-table-players assert-card-on-table-players"></div>' + tablePutCards.innerHTML;
+        if (rotate === true) tablePutCards.innerHTML
+            = '<div style="transform:rotate(90deg);margin-left:18px;margin-right:18px;"'
+            + 'class="card-on-table-players assert-card-on-table-players"></div>' + tablePutCards.innerHTML;
+    }
+    function add_atEnd() {
+        if (rotate === false) tablePutCards.innerHTML
+            += '<div class="card-on-table-players assert-card-on-table-players"></div>';
+        if (rotate === true) tablePutCards.innerHTML
+            += '<div style="transform:rotate(90deg);margin-left:18px;margin-right:18px;"'
+            + 'class="card-on-table-players assert-card-on-table-players"></div>';
+    }
+    
+    //console.log(dataCardWasSelectedToPlay)
+    if (startGame === true) {
+        _______card_left_number = dataCardWasSelectedToPlay.top;
+        _______card_right_number = dataCardWasSelectedToPlay.bottom;
+
+        add_atStart();
+        ____where_add_card_on_table = "START";
+    } else if (dataCardWasSelectedToPlay.top === _______card_left_number
+     || dataCardWasSelectedToPlay.bottom === _______card_left_number) {
+        add_atEnd();
+        ____where_add_card_on_table = "END";
+    }
+    else if (dataCardWasSelectedToPlay.top === _______card_right_number
+     || dataCardWasSelectedToPlay.bottom === _______card_right_number) {
+        add_atStart();
+        ____where_add_card_on_table = "START";
+        
+    } else {
+        console.log("you cannot play")
+    }
+    
+    setEventsForAssertCardsOnTablePlayers();
+}
+
+function addNewCardToTablePlayers(top=0, bottom=0) {
+    if (!isCardOnTable(top, bottom)) {
+        ALL_CARD_ON_TABLE.push({ top: top, bottom: bottom });
+    }
+}
+
+function endAnimationSelectPrivateCard() {
+    loopOnPrivateCards(function(elementPrivateCard) {
+        elementPrivateCard.classList.remove("animation-light-card");
+    });
+}
+
+function addAnimationSelectPrivateCard(cardElement) {
+    cardElement.classList.add("animation-light-card");
+}
+
+
+let __name_player_toshow = "";
+
+function startGameTable() {
+    const CARDS_PC = [];
+
+    let count_cards = 0;
+    let _setForMyPc = false;
+    while (count_cards < 28) {
+        let __card = getRandomCardNotPlayed();
+        if (_setForMyPc === false) addNewPrivateCard(__card.top, __card.bottom); else CARDS_PC.push(__card);
+        if (count_cards === 6) _setForMyPc = true; else if (count_cards === 13) break;
+        count_cards++;
+    }
+    
+
+    let __my_game_role = true;    
+    const NAME_PC = "computer";
+    
+/////////////////////////////////////////////////////////////////////////////////////////////////
+    let _____func_computer = null;                                                            ///
+    let _____func_my = null;                                                                  ///
+    function _____whenStartRoleComputer(callbackFunction) {                                   ///
+        if (typeof callbackFunction === "function") {                                         ///
+            _____func_computer = callbackFunction;                                            ///
+        } else if (!!_____func_computer) _____func_computer();                                ///
+    }                                                                                         ///
+    function _____whenStartMyRole(callbackFunction) {                                         ///
+        if (typeof callbackFunction === "function") {                                         ///
+            _____func_my = callbackFunction;                                                  ///
+        } else if (!!_____func_my) _____func_my();                                            ///
+    }                                                                                         ///
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+    _____whenStartRoleComputer(function() {
+        console.log("cccccccccccccc")
+    });
+    _____whenStartMyRole(function() {
+        console.log("mmmmmmmmmmmmmmmmmmmm")
+    });
+
+
+    // loop between player { PC VS ME }
+    function loopTimerPlayers() {
+        startNewTimerOnScreen(function() {
+            if (__my_game_role) {
+                loopTimerPlayers();
+                _____whenStartMyRole();
+                doAnimationStartRoleAnotherPlayer(_getUserNameAsPlayerInGame());
+                __my_game_role = false;
+            } else {
+                _____whenStartRoleComputer();
+                doAnimationStartRoleAnotherPlayer(NAME_PC);
+                __my_game_role = true;
+            }
+        });
+    }
+
+    doAnimationStartRoleAnotherPlayer(_getUserNameAsPlayerInGame());
+    loopTimerPlayers();
+}
+
+
+// exports.startGameTable = startGameTable;
+
+// some tools here to controll there :) hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+/* exports.hideNameUserOnScreen = hideNameUserOnScreen;
+exports.showNameOnScreen = showNameOnScreen;
+exports.showOptionsToolsForEditGame = showOptionsToolsForEditGame;
+exports.getRandomColor____RBG = getRandomColor____RBG; */
+
+/* exports.MediaPlayer = MediaPlayer; */</script>
+    </body>
+</html>
